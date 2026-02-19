@@ -23,11 +23,34 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="da">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased bg-zinc-100 text-zinc-900`}
       >
-        {children}
+        <div className="min-h-screen flex flex-col">
+          <header className="border-b border-zinc-200 bg-white">
+            <div className="mx-auto flex max-w-5xl items-center justify-between px-6 py-3">
+              <div className="flex items-center gap-2">
+                <span className="text-sm font-semibold tracking-[0.18em] uppercase text-zinc-700">
+                  Biludlejning
+                </span>
+              </div>
+              <nav className="flex items-center gap-3 text-sm text-zinc-600">
+                <a href="/booking" className="rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-zinc-800 hover:bg-zinc-50">
+                  Booking
+                </a>
+                <a href="/login" className="rounded-full border border-zinc-300 bg-white px-3 py-1.5 text-zinc-800 hover:bg-zinc-50">
+                  Log ind
+                </a>
+              </nav>
+            </div>
+          </header>
+          <main className="flex-1">
+            <div className="mx-auto flex max-w-5xl px-6 py-10 md:py-16">
+              {children}
+            </div>
+          </main>
+        </div>
       </body>
     </html>
   );

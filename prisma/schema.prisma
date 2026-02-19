@@ -1,0 +1,39 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+
+
+enum CarType {
+  SMALL
+  MIDSIZE
+  VAN
+}
+
+model AdminUser {
+  id           BigInt   @id @default(autoincrement())
+  username     String   @unique @db.VarChar(50)
+  passwordHash String   @db.VarChar(255)
+  createdAt    DateTime @default(now())
+}
+
+model Booking {
+  id            BigInt   @id @default(autoincrement())
+  carType       CarType
+  startDate     DateTime
+  endDate       DateTime
+  gps           Boolean  @default(false)
+  childSeat     Boolean  @default(false)
+
+  days          Int
+  dailyPriceOre Int
+  totalPriceOre Int
+
+  createdAt     DateTime @default(now())
+
+  @@index([createdAt])
+}

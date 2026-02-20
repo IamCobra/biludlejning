@@ -5,10 +5,12 @@ import { useState } from "react";
 export default function LoginPage() {
   const [form, setForm] = useState({ username: "", password: "" });
   const [error, setError] = useState<string | null>(null);
+  const [info, setInfo] = useState<string | null>(null);
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
     setError(null);
+    setInfo(null);
 
     const res = await fetch("/api/login", {
       method: "POST",
@@ -22,8 +24,7 @@ export default function LoginPage() {
       setError(data.error || "Login fejlede");
       return;
     }
-
-    alert("Du er nu logget ind som admin");
+    setInfo("Du er nu logget ind som admin. Du kan nu se alle bookinger under Admin.");
   }
 
   return (
@@ -71,6 +72,12 @@ export default function LoginPage() {
           {error && (
             <p className="text-sm text-red-600" role="alert">
               {error}
+            </p>
+          )}
+
+          {info && !error && (
+            <p className="text-sm text-emerald-700" role="status">
+              {info}
             </p>
           )}
 

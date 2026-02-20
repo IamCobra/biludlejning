@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const res = NextResponse.json({ success: true });
     res.cookies.set("admin", "1", {
-      httpOnly: true,
+      // Ikke httpOnly, så UI'en (AuthButton) kan læse den via document.cookie
       sameSite: "lax",
       path: "/",
     });

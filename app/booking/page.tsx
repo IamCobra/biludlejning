@@ -11,8 +11,13 @@ export default function BookingPage() {
     childSeat: false,
   });
 
+  const [totalPriceOre, setTotalPriceOre] = useState<number | null>(null);
+  const [error, setError] = useState<string | null>(null);
+
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
+
+    setError(null);
 
     const res = await fetch("/api/bookings", {
       method: "POST",
@@ -23,11 +28,13 @@ export default function BookingPage() {
     const data = await res.json();
 
     if (!res.ok) {
-      alert(data.error || "Fejl");
+      setError(data.error || "Fejl ved booking");
       return;
     }
 
-    alert("Booking oprettet! Total (øre): " + data.totalPriceOre);
+    if (typeof data.totalPriceOre === "number") {
+      setTotalPriceOre(data.totalPriceOre);
+    }
   }
 
   return (
@@ -119,6 +126,19 @@ export default function BookingPage() {
               Bestil bil
             </button>
           </div>
+
+          {error && (
+            <p className="mt-3 text-sm text-red-600" role="alert">
+              {error}
+            </p>
+          )}
+
+          {totalPriceOre !== null && (
+            <p className="mt-3 text-sm font-medium text-zinc-800">
+              Samlet pris for denne booking: {" "}
+              {(totalPriceOre / 100).toFixed(2).replace(".", ",")} kr
+            </p>
+          )}
         </form>
       </div>
 

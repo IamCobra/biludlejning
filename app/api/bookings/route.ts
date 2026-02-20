@@ -19,7 +19,7 @@ export async function POST(req: NextRequest) {
 
     if (!carType || !startDate || !endDate) {
       return NextResponse.json(
-        { error: "Manglende påkrævede felter." },
+        { error: "Udfyld biltype, startdato og slutdato." },
         { status: 400 },
       );
     }
@@ -28,7 +28,10 @@ export async function POST(req: NextRequest) {
     const parsedEnd = new Date(endDate);
 
     if (isNaN(parsedStart.getTime()) || isNaN(parsedEnd.getTime())) {
-      return NextResponse.json({ error: "Ugyldige datoer." }, { status: 400 });
+      return NextResponse.json(
+        { error: "Datoerne er ugyldige. Vælg gyldige kalenderdatoer." },
+        { status: 400 },
+      );
     }
 
     const priceResult = calculatePrice({

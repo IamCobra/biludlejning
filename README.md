@@ -1,36 +1,69 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## HF3 Biludlejning – prototype
 
-## Getting Started
+En simpel Next.js‑prototype til biludlejning med bestillingsformular, prisberegning og admin‑oversigt.
 
-First, run the development server:
+### Teknologier
+- Next.js (App Router)
+- Prisma + PostgreSQL
+
+### Sådan kører du projektet
+
+1. Start PostgreSQL via Docker Compose:
+
+```bash
+docker compose up -d
+```
+
+2. Kør migrationer og generér Prisma Client (hvis ikke allerede gjort):
+
+```bash
+npx prisma migrate deploy
+npx prisma generate
+```
+
+3. Start udviklingsserveren:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Åbn `http://localhost:3000` i browseren.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Funktioner
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- **Forside**: kort intro og links til booking og login.
+- **Bestilling** (`/booking`):
+	- Vælg biltype (mindre, mellemklasse, varevogn)
+	- Vælg start- og slutdato
+	- Tilvælg GPS og barnesæde
+	- Pris beregnes server‑side og vises efter bestilling
+	- Booking gemmes i PostgreSQL via Prisma
+- **Admin‑login** (`/login`):
+	- Logger ind med `AdminUser` fra databasen (bcrypt‑hash)
+	- Sætter en simpel `admin`‑cookie
+- **Admin‑oversigt** (`/admin/bookings`):
+	- Liste over alle bookinger med datoer, biltype, antal dage og total pris
+- **Admin‑detaljer** (`/admin/bookings/[id]`):
+	- Viser alle oplysninger om én booking
+- **Log ud** (`/logout`):
+	- Fjerner `admin`‑cookien og sender brugeren til forsiden
 
-## Learn More
+### Opret en admin‑bruger
 
-To learn more about Next.js, take a look at the following resources:
+1. Generér en bcrypt‑hash til en adgangskode, fx `test123`:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+node scripts/hash-password.cjs test123
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+2. Åbn Prisma Studio:
 
-## Deploy on Vercel
+```bash
+npx prisma studio
+```
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+3. Opret en række i tabellen **AdminUser** med:
+	 - `username`: fx `admin`
+	 - `passwordHash`: hash‑værdien fra kommandoen ovenfor
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+Herefter kan du logge ind på `/login` med disse oplysninger.

@@ -1,4 +1,3 @@
-import { notFound } from "next/navigation";
 import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 
@@ -18,26 +17,63 @@ interface PageProps {
 }
 
 export default async function BookingDetailPage({ params }: PageProps) {
-  let bookingId: bigint;
-  try {
-    bookingId = BigInt(params.id);
-  } catch {
-    notFound();
+  const rawId = params.id ?? "";
+  const cleanedId = rawId.replace(/[^0-9]/g, "");
+
+  if (!cleanedId) {
+    return (
+      <section className="w-full">
+        <h1 className="text-xl font-semibold text-zinc-900">
+          Ugyldigt booking-id
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600">
+          Den angivne booking kunne ikke findes. Gå tilbage til oversigten og
+          prøv igen.
+        </p>
+      </section>
+    );
   }
 
-  const booking = await prisma.booking.findUnique({
-    where: { id: bookingId },
-  });
+  const bookingId = BigInt(cleanedId);
+
+  let booking;
+  try {
+    booking = await prisma.booking.findUnique({
+      where: { id: bookingId },
+    });
+  } catch (error) {
+    console.error("Booking detail error:", error);
+    return (
+      <section className="w-full">
+        <h1 className="text-xl font-semibold text-zinc-900">
+          Fejl ved indlæsning af booking
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600">
+          Der opstod en fejl under hentning af bookingdata.
+        </p>
+      </section>
+    );
+  }
 
   if (!booking) {
-    notFound();
+    return (
+      <section className="w-full">
+        <h1 className="text-xl font-semibold text-zinc-900">
+          Booking ikke fundet
+        </h1>
+        <p className="mt-2 text-sm text-zinc-600">
+          Bookingen findes ikke længere. Gå tilbage til oversigten og prøv med
+          en anden.
+        </p>
+      </section>
+    );
   }
 
   return (
     <section className="w-full">
       <div className="mb-6 flex items-baseline justify-between gap-3">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+          <h1 className="text-2xl font-semibold tracking-tight text-zinc-700">
             Booking #{booking.id.toString()}
           </h1>
           <p className="mt-1 text-sm text-zinc-500">

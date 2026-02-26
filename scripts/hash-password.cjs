@@ -1,4 +1,4 @@
-// scripts/hash-password.cjs
+/* eslint-disable */
 const bcrypt = require("bcryptjs");
 
 const password = process.argv[2];

@@ -25,6 +25,9 @@ export default function LoginPage() {
       return;
     }
     setInfo("Du er nu logget ind som admin. Du kan nu se alle bookinger under Admin.");
+
+    // Efter succesfuldt login: redirect til forsiden, så headeren opdateres til "Log ud"
+    window.location.href = "/";
   }
 
   return (
@@ -35,13 +38,13 @@ export default function LoginPage() {
         </h1>
         <p className="mt-2 text-sm text-zinc-500">
           Log ind med det brugernavn og den adgangskode, du har oprettet
-          til admin-brugeren i databasen (f.eks. via Prisma Studio).
+          til admin-brugeren i databasen.
         </p>
 
         <form onSubmit={handleSubmit} className="mt-8 space-y-5">
           <div className="space-y-2">
             <label className="text-sm font-medium text-zinc-800">
-              Brugernavn
+              Brugernavn 
             </label>
             <input
               type="text"
@@ -78,7 +81,7 @@ export default function LoginPage() {
           {info && !error && (
             <p className="text-sm text-emerald-700" role="status">
               {info}
-            </p>
+            </p> 
           )}
 
           <div className="pt-2">

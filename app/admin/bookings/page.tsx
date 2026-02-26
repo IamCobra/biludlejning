@@ -21,7 +21,7 @@ export default async function AdminBookingsPage() {
   return (
     <section className="w-full">
       <div className="mb-6 flex items-baseline justify-between gap-3">
-        <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
+        <h1 className="text-2xl font-semibold tracking-tight text-zinc-700">
           Admin · Bestillinger
         </h1>
         <p className="text-sm text-zinc-500">
@@ -42,6 +42,7 @@ export default async function AdminBookingsPage() {
                 <th className="px-4 py-3">Biltype</th>
                 <th className="px-4 py-3">Datoer</th>
                 <th className="px-4 py-3">Dage</th>
+                <th className="px-4 py-3">Tilvalg</th>
                 <th className="px-4 py-3">Pris</th>
                 <th className="px-4 py-3 text-right">Detaljer</th>
               </tr>
@@ -60,6 +61,17 @@ export default async function AdminBookingsPage() {
                     {b.endDate.toLocaleDateString("da-DK")}
                   </td>
                   <td className="px-4 py-3 align-top text-zinc-600">{b.days}</td>
+                  <td className="px-4 py-3 align-top text-zinc-600">
+                    {b.gps || b.childSeat ? (
+                      <span>
+                        {b.gps ? "GPS" : ""}
+                        {b.gps && b.childSeat ? ", " : ""}
+                        {b.childSeat ? "Barnesæde" : ""}
+                      </span>
+                    ) : (
+                      <span>Ingen</span>
+                    )}
+                  </td>
                   <td className="px-4 py-3 align-top text-zinc-800">
                     {formatPrice(b.totalPriceOre)}
                   </td>
@@ -68,7 +80,7 @@ export default async function AdminBookingsPage() {
                       href={`/admin/bookings/${b.id.toString()}`}
                       className="inline-flex items-center justify-center rounded-full border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-800 hover:bg-zinc-50"
                     >
-                      Se detaljer
+                      Se fuld bestilling
                     </Link>
                   </td>
                 </tr>

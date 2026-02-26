@@ -3,6 +3,7 @@
 En simpel Next.js‑prototype til biludlejning med bestillingsformular, prisberegning og admin‑oversigt.
 
 ### Teknologier
+
 - Next.js (App Router)
 - Prisma + PostgreSQL
 
@@ -33,20 +34,20 @@ npm run dev
 
 - **Forside**: kort intro og links til booking og login.
 - **Bestilling** (`/booking`):
-	- Vælg biltype (mindre, mellemklasse, varevogn)
-	- Vælg start- og slutdato
-	- Tilvælg GPS og barnesæde
-	- Pris beregnes server‑side og vises efter bestilling
-	- Booking gemmes i PostgreSQL via Prisma
+  - Vælg biltype (mindre, mellemklasse, varevogn)
+  - Vælg start- og slutdato
+  - Tilvælg GPS og barnesæde
+  - Pris beregnes server‑side og vises efter bestilling
+  - Booking gemmes i PostgreSQL via Prisma
 - **Admin‑login** (`/login`):
-	- Logger ind med `AdminUser` fra databasen (bcrypt‑hash)
-	- Sætter en simpel `admin`‑cookie
+  - Logger ind med `AdminUser` fra databasen (bcrypt‑hash)
+  - Sætter en simpel `admin`‑cookie
 - **Admin‑oversigt** (`/admin/bookings`):
-	- Liste over alle bookinger med datoer, biltype, antal dage og total pris
+  - Liste over alle bookinger med datoer, biltype, antal dage og total pris
 - **Admin‑detaljer** (`/admin/bookings/[id]`):
-	- Viser alle oplysninger om én booking
+  - Viser alle oplysninger om én booking
 - **Log ud** (`/logout`):
-	- Fjerner `admin`‑cookien og sender brugeren til forsiden
+  - Fjerner `admin`‑cookien og sender brugeren til forsiden
 
 ### Opret en admin‑bruger
 
@@ -63,7 +64,7 @@ npx prisma studio
 ```
 
 3. Opret en række i tabellen **AdminUser** med:
-	 - `username`: fx `admin`
-	 - `passwordHash`: hash‑værdien fra kommandoen ovenfor
+   - `username`: fx `admin`
+   - `passwordHash`: hash‑værdien fra kommandoen ovenfor
 
 Herefter kan du logge ind på `/login` med disse oplysninger.

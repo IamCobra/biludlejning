@@ -1,9 +1,18 @@
 "use client";
 
 import { useState } from "react";
+import { calculatePrice, type CarType } from "@/lib/pricing";
+
+type BookingFormState = {
+  carType: CarType;
+  startDate: string;
+  endDate: string;
+  gps: boolean;
+  childSeat: boolean;
+};
 
 export default function BookingPage() {
-  const [form, setForm] = useState({
+  const [form, setForm] = useState<BookingFormState>({
     carType: "SMALL",
     startDate: "",
     endDate: "",
@@ -37,6 +46,34 @@ export default function BookingPage() {
     }
   }
 
+  // Udregn live pris-preview direkte i render på baggrund af formularens state
+  let previewMessage: string | null = null;
+  let previewPriceOre: number | null = null;
+  let previewDays: number | null = null;
+
+  if (!form.startDate || !form.endDate) {
+    previewMessage = "Vælg biltype og periode for at se en pris.";
+  } else {
+    try {
+      const start = new Date(form.startDate);
+      const end = new Date(form.endDate);
+
+      const result = calculatePrice({
+        carType: form.carType,
+        startDate: start,
+        endDate: end,
+        gps: form.gps,
+        childSeat: form.childSeat,
+      });
+
+      previewPriceOre = result.totalPriceOre;
+      previewDays = result.days;
+    } catch {
+      previewMessage =
+        "Periode er ugyldig. Slutdato skal være efter startdato (mindst 1 dag).";
+    }
+  }
+
   return (
     <section className="grid w-full gap-10 md:grid-cols-[minmax(0,1.4fr)_minmax(0,1fr)] items-start">
       <div className="rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
@@ -55,7 +92,7 @@ export default function BookingPage() {
             <select
               value={form.carType}
               onChange={(e) =>
-                setForm({ ...form, carType: e.target.value })
+                setForm({ ...form, carType: e.target.value as CarType })
               }
               className="w-full rounded-2xl border border-zinc-200 bg-white px-4 py-2.5 text-sm text-zinc-900 outline-none transition focus:border-zinc-900 focus:ring-2 focus:ring-zinc-900/20"
             >
@@ -133,10 +170,20 @@ export default function BookingPage() {
             </p>
           )}
 
-          {totalPriceOre !== null && (
+          {previewMessage && (
+            <p className="mt-3 text-sm text-zinc-600">{previewMessage}</p>
+          )}
+
+          {previewPriceOre !== null && previewDays !== null && (
             <p className="mt-3 text-sm font-medium text-zinc-800">
-              Samlet pris for denne booking: {" "}
-              {(totalPriceOre / 100).toFixed(2).replace(".", ",")} kr
+              For valgt periode ({previewDays} dage) er den samlede pris: {" "}
+              {(previewPriceOre / 100).toFixed(2).replace(".", ",")} kr
+            </p>
+          )}
+
+          {totalPriceOre !== null && (
+            <p className="mt-1 text-xs text-emerald-700">
+              Booking oprettet med den viste pris.
             </p>
           )}
         </form>
@@ -161,8 +208,7 @@ export default function BookingPage() {
           </div>
           <div className="h-px bg-zinc-200" />
           <p className="text-xs text-zinc-500">
-            Projektet bruger Prisma + PostgreSQL til at gemme alle bookinger og
-            sikre konsistente priser.
+            Alle bestillinger gemmes, så du senere kan se dem i administrationen.
           </p>
         </div>
       </aside>

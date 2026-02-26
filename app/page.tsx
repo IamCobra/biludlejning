@@ -1,16 +1,13 @@
-import Image from "next/image";
-
 export default function Home() {
   return (
     <section className="w-full">
       <div className="w-full rounded-3xl border border-zinc-200 bg-white p-8 shadow-sm">
         <h1 className="text-2xl font-semibold tracking-tight text-zinc-900">
-          Velkommen til HF3 Biludlejning
+          Velkommen til Biludlejning
         </h1>
         <p className="mt-3 text-sm text-zinc-600 max-w-xl">
-          Dette er en simpel prototype til håndtering af bilbookinger. Du kan
-          oprette en booking eller logge ind som administrator for at se
-          data.
+          Her kan du bestille en bil til en bestemt periode og vælge ekstraudstyr.
+          Som administrator kan du logge ind og se alle bestillinger.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">

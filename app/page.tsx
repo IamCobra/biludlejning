@@ -7,7 +7,6 @@ export default function Home() {
         </h1>
         <p className="mt-3 text-sm text-zinc-600 max-w-xl">
           Her kan du bestille en bil til en bestemt periode og vælge ekstraudstyr.
-          Som administrator kan du logge ind og se alle bestillinger.
         </p>
 
         <div className="mt-8 flex flex-wrap gap-3">
@@ -16,12 +15,6 @@ export default function Home() {
             className="inline-flex items-center justify-center rounded-full border border-zinc-300 bg-zinc-900 px-4 py-2 text-sm font-medium text-white hover:bg-zinc-800"
           >
             Gå til booking
-          </a>
-          <a
-            href="/login"
-            className="inline-flex items-center justify-center rounded-full border border-zinc-300 bg-white px-4 py-2 text-sm font-medium text-zinc-800 hover:bg-zinc-50"
-          >
-            Log ind som admin
           </a>
         </div>
       </div>

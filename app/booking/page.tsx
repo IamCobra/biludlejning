@@ -23,7 +23,7 @@ export default function BookingPage() {
   const [totalPriceOre, setTotalPriceOre] = useState<number | null>(null);
   const [error, setError] = useState<string | null>(null);
 
-  async function handleSubmit(e: React.FormEvent) {
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
 
     setError(null);
@@ -46,7 +46,7 @@ export default function BookingPage() {
     }
   }
 
-  // Udregn live pris-preview direkte i render på baggrund af formularens state
+  
   let previewMessage: string | null = null;
   let previewPriceOre: number | null = null;
   let previewDays: number | null = null;

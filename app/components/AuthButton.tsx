@@ -1,19 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
-
 export function AuthButton() {
-  const [isAdmin, setIsAdmin] = useState<boolean | null>(null);
+  const hasAdminCookie = typeof document !== "undefined" && document.cookie
+    .split(";")
+    .some((c) => c.trim().startsWith("admin="));
 
-  useEffect(() => {
-    const hasAdminCookie = document.cookie
-      .split(";")
-      .some((c) => c.trim().startsWith("admin="));
-    setIsAdmin(hasAdminCookie);
-  }, []);
-
-  const href = isAdmin ? "/logout" : "/login";
-  const label = isAdmin ? "Log ud" : "Log ind";
+  const href = hasAdminCookie ? "/logout" : "/login";
+  const label = hasAdminCookie ? "Log ud" : "Log ind";
 
   return (
     <a
